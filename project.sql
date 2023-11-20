@@ -41,7 +41,7 @@ AS SELECT * FROM player_all WHERE season < 2024 and season > 1950;
 
 --select player from player_all_clean where season = 2021 GROUP BY (season,player) HAVING count(*) > 1;
 
-DELETE FROM player_all_clean WHERE tm != 'TOT' and player_id in (select player_id from player_all_clean where season = 2021 GROUP BY (season,player_id) HAVING count(*) > 1);
+DELETE FROM player_all_clean WHERE tm != 'TOT' and player_id in (select player_id from player_all_clean GROUP BY (season,player_id) HAVING count(*) > 1);
 
 --select player from player_all_clean where season = 2021 GROUP BY (season,player) HAVING count(*) > 1;
 
