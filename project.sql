@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS player_info;
 DROP TABLE IF EXISTS player_stats;
 DROP TABLE IF EXISTS player_all;
 DROP TABLE IF EXISTS player_all_clean;
+DROP TABLE IF EXISTS player_salaries;
 
 
 CREATE 
@@ -58,5 +59,12 @@ SELECT seas_id, player_id, player, g,
     trb , ast , stl , blk , tov , pf , pts 
 FROM player_all_clean;
 
+-- Clean Salary
+CREATE TABLE player_salaries (
+    rank INT,
+    name TEXT,
+    season NUMERIC(4),
+    salary MONEY
+);
 
-
+\copy player_salaries FROM 'salary.csv' CSV HEADER;
