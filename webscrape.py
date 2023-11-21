@@ -1,8 +1,14 @@
 import requests
-from bs4 import BeautifulSoup
 import pandas as pd
-# import matplotlib.pyplot as plt
 import numpy as np
+import csv
+import unicodedata
+from bs4 import BeautifulSoup
+# import matplotlib.pyplot as plt
+
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
 url="https://hoopshype.com/salaries/players/"
 
@@ -46,3 +52,12 @@ totalDF.to_csv('./salary.csv')
 # column4=[salary_table.find_all("td")[i].text.strip() for i in range(13,length,8)]
 # column5=[salary_table.find_all("td")[i].text.strip() for i in range(14,length,8)]
 # column6=[salary_table.find_all("td")[i].text.strip() for i in range(15,length,8)]
+
+with open('Player_Totals.csv', 'r') as csvfile:
+    csv_reader = csv.reader(csvfile)
+
+    with open('new_player_totals.csv', 'w') as file:
+        csv_writer = csv.writer(file)
+        for line in csv_reader:
+            line[3] = remove_accents(line[3])
+            csv_writer.writerow(line)
