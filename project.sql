@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS player_stats;
 DROP TABLE IF EXISTS player_all;
 DROP TABLE IF EXISTS player_all_clean;
 DROP TABLE IF EXISTS player_salaries;
-
+DROP TABLE IF EXISTS player_salaryinfo;
 
 CREATE 
 TABLE player_all(
@@ -33,7 +33,7 @@ TABLE player_stats(
 );
 
 
-\copy player_all FROM 'player_totals.csv' CSV HEADER;
+\copy player_all FROM 'new_player_totals.csv' CSV HEADER;
 ALTER TABLE player_info ADD PRIMARY KEY(seas_id);
 
 CREATE TABLE player_all_clean
@@ -69,9 +69,17 @@ CREATE TABLE player_salaries (
 
 \copy player_salaries FROM 'salary.csv' CSV HEADER;
 
-SELECT seas_id, player_id, player, salaries.salary, g, 
-    gs , mp , fg , fga ,
-    fg_percent , x3p , x3pa , x3p_percent ,
-    x2p , x2pa , x2p_percent , e_fg_percent ,
-    ft , fta , ft_percent , orb , drb ,
-    trb , ast , stl , blk , tov , pf , pts FROM player_stats AS stats JOIN player_salaries AS salaries ON stats.player = salaries.name;
+
+CREATE TABLE player_salaryInfo
+AS SELECT seas_id,pi.season,player_id,player,sal.salary,pos,age,experience,lg,tm
+FROM player_info AS pi
+JOIN player_salaries AS sal ON (pi.player,pi.season) = (sal.name,sal.season);
+
+DROP TABLE IF EXISTS player_info;
+
+--SELECT seas_id, player_id, player, salaries.salary, g, 
+--    gs , mp , fg , fga ,
+--    fg_percent , x3p , x3pa , x3p_percent ,
+--    x2p , x2pa , x2p_percent , e_fg_percent ,
+--    ft , fta , ft_percent , orb , drb ,
+--    trb , ast , stl , blk , tov , pf , pts FROM player_stats AS stats JOIN player_salaries AS salaries ON stats.player = salaries.name;

@@ -13,7 +13,7 @@ def remove_accents(input_str):
 url="https://hoopshype.com/salaries/players/"
 
 dfs = []
-for i in range(1990, 2022):
+for i in range(1990, 2023):
         newUrl = url + f"{i}-{i+1}/"
         r = requests.get(newUrl,timeout=100)
         r_html = r.text
