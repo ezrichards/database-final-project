@@ -68,3 +68,10 @@ CREATE TABLE player_salaries (
 );
 
 \copy player_salaries FROM 'salary.csv' CSV HEADER;
+
+SELECT seas_id, player_id, player, salaries.salary, g, 
+    gs , mp , fg , fga ,
+    fg_percent , x3p , x3pa , x3p_percent ,
+    x2p , x2pa , x2p_percent , e_fg_percent ,
+    ft , fta , ft_percent , orb , drb ,
+    trb , ast , stl , blk , tov , pf , pts FROM player_stats AS stats JOIN player_salaries AS salaries ON stats.player = salaries.name;
