@@ -10,6 +10,19 @@ def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
     return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
+
+#create cpi table
+cpiDict = {}
+with open('cpi.csv', 'r') as cpi:
+    csv_reader = csv.reader(cpi)
+    count = 0
+    for line in csv_reader:
+        if count != 0:
+            year = int(line[0])
+            equiv100bucks = float(line[1])
+            cpiDict[year] = equiv100bucks
+        count += 1
+
 url="https://hoopshype.com/salaries/players/"
 
 dfs = []
@@ -26,9 +39,14 @@ for i in range(1990, 2023):
         seas = [i + 1 for _ in range(5,length,4)]
         sals=[salary_table.find_all("td")[j].text.strip() for j in range(6,length,4)]
 
+        adjust = cpiDict[i]
+        currmoney = cpiDict[2022]
+        adj2023 = [(currmoney * (int(j.replace('$','').replace(',',''))/adjust))//1 for j in sals]
+
         df_dict={'player_names':player_names,
         'season':seas,
-        'salaries':sals
+        'salaries':sals,
+        'adj': adj2023
         }
         
         salary_df=pd.DataFrame(df_dict)

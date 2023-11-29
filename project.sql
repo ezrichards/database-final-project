@@ -64,14 +64,15 @@ CREATE TABLE player_salaries (
     rank INT,
     name TEXT,
     season NUMERIC(4),
-    salary MONEY
+    salary MONEY,
+    adjustedSalary MONEY
 );
 
 \copy player_salaries FROM 'salary.csv' CSV HEADER;
 
 
 CREATE TABLE player_salaryInfo
-AS SELECT seas_id,pi.season,player_id,player,sal.salary,pos,age,experience,lg,tm
+AS SELECT seas_id,pi.season,player_id,player,sal.salary,sal.adjustedSalary,pos,age,experience,lg,tm
 FROM player_info AS pi
 JOIN player_salaries AS sal ON (pi.player,pi.season) = (sal.name,sal.season);
 
