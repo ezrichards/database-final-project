@@ -1,0 +1,60 @@
+[200~---
+title: "databaseMLR"
+output: html_document
+date: "2023-11-29"
+---
+
+```{r, include = F, warning=F, message=F}
+# front-matter
+rm(list = ls()) #clear the workspace
+
+library(tidyverse)
+library(RPostgres)
+library(mosaic)
+library(ggformula)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+```
+
+Now load the sql
+
+```{r}
+db_user <- rstudioapi::askForPassword("Enter Your Username: ")
+db_password <- rstudioapi::askForPassword("Enter Your Password: ")
+
+
+canCon <- dbCanConnect(RPostgres::Postgres(),
+  dbname = 'csci403',
+  host = 'codd.mines.edu',
+  port = '5433',
+  user = db_user,
+  password = db_password)
+
+con <- dbConnect(RPostgres::Postgres(),
+  dbname = 'csci403',
+  host = 'codd.mines.edu',
+  port = '5433',
+  user = db_user,
+  password = db_password)
+```
+
+```{r}
+if (canCon) {
+  cat("Connected to PostgreSQL\n")
+
+  # Example: Execute a query
+  #query <- "SELECT * FROM your_table"
+  #result <- dbGetQuery(con, query)
+
+  # Display the result
+  #print(result)
+
+  # Close the connection when done
+  dbDisconnect(con)
+} else {
+  cat("Connection failed\n")
+}
+```
