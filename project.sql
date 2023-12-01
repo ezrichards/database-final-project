@@ -45,6 +45,7 @@ DELETE FROM player_all_clean WHERE tm != 'TOT' and player_id in (select player_i
 
 --select player from player_all_clean where season = 2021 GROUP BY (season,player) HAVING count(*) > 1;
 
+DROP TABLE IF EXISTS player_reg;
 
 INSERT INTO player_info
 SELECT seas_id,season,player_id,player,pos,age,experience,lg,tm 
@@ -76,7 +77,18 @@ AS SELECT seas_id,pi.season,player_id,player,sal.salary,sal.adjustedSalary,pos,a
 FROM player_info AS pi
 JOIN player_salaries AS sal ON (pi.player,pi.season) = (sal.name,sal.season);
 
+
+
+CREATE TABLE player_reg 
+AS SELECT pi.seas_id,pi.season,pi.player,pi.adjustedsalary,
+(pi.adjustedsalary - (9.5 * ps.pts * POWER(10,3) + 1.066 * ps.ast * POWER(10,4) - 1.54 * ps.orb * POWER(10,4) + 2.085*ps.drb*POWER(10,4) - 3.543 * ps.stl * POWER(10,4) + 7.01 * ps.gs * POWER(10,4) + 6.738 * pi.experience * POWER(10,5) - 6.223 * ps.mp * POWER(10,3) + ps.fg_percent * -1.686 * POWER(10,7) + 5.192 * POWER(10,6)*ps.x2p_percent + 1.34 * POWER(10,7) * ps.e_fg_percent) ) AS residual,
+(9.5 * ps.pts * POWER(10,3) + 1.066 * ps.ast * POWER(10,4) - 1.54 * ps.orb * POWER(10,4) + 2.085*ps.drb*POWER(10,4) - 3.543 * ps.stl * POWER(10,4) + 7.01 * ps.gs * POWER(10,4) + 6.738 * pi.experience * POWER(10,5) - 6.223 * ps.mp * POWER(10,3) + ps.fg_percent * -1.686 * POWER(10,7) + 5.192 * POWER(10,6)*ps.x2p_percent + 1.34 * POWER(10,7) * ps.e_fg_percent ) AS predSal
+FROM player_salaryinfo as pi
+JOIN player_stats as ps on (pi.seas_id = ps.seas_id);
+
+
 DROP TABLE IF EXISTS player_info;
+ALTER TABLE f23_group14.player_reg OWNER to f23_group14;
 ALTER TABLE f23_group14.player_stats OWNER to f23_group14;
 ALTER TABLE f23_group14.player_salaryinfo OWNER to f23_group14;
 --SELECT seas_id, player_id, player, salaries.salary, g, 
