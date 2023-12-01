@@ -64,8 +64,8 @@ CREATE TABLE player_salaries (
     rank INT,
     name TEXT,
     season NUMERIC(4),
-    salary MONEY,
-    adjustedSalary MONEY
+    salary NUMERIC,
+    adjustedSalary NUMERIC
 );
 
 \copy player_salaries FROM 'salary.csv' CSV HEADER;
