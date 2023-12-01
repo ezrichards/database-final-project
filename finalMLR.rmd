@@ -1,4 +1,4 @@
-[200~---
+[200~---
 title: "databaseMLR"
 output: html_document
 date: "2023-11-29"
@@ -45,16 +45,54 @@ con <- dbConnect(RPostgres::Postgres(),
 if (canCon) {
   cat("Connected to PostgreSQL\n")
 
-  # Example: Execute a query
-  #query <- "SELECT * FROM your_table"
+  #query <- "SET SEARCH_PATH TO f23_group14;"
   #result <- dbGetQuery(con, query)
 
-  # Display the result
-  #print(result)
+query <- "SELECT pi.player,pi.salary,pi.adjustedsalary,pi.experience,g, gs, mp,x3p_percent,x2p_percent,fg_percent,e_fg_percent,ft_percent,orb,drb,ast,stl,blk,tov,pf,pts FROM f23_group14.player_stats as ps JOIN f23_group14.player_salaryinfo as pi ON pi.seas_id = ps.seas_id ;"
+  req <- dbSendQuery(con, query)
 
-  # Close the connection when done
-  dbDisconnect(con)
+  data <- dbFetch(req)
+  data
 } else {
   cat("Connection failed\n")
 }
+```
+
+```{r}
+  dbDisconnect(con)
+
+```
+```{r}
+data[1459,]
+mlr <- lm(adjustedsalary ~ pts + ast + orb + drb + stl + blk + g + gs + experience + mp +fg_percent+ x3p_percent + x2p_percent + e_fg_percent + ft_percent + tov + pf, data = data)
+summary(mlr)
+
+plot(mlr,which = c(1,2,5))
+#sort(mlr$residuals)
+
+```
+
+```{r}
+
+bestMod <- regsubsets(adjustedsalary ~ pts + ast + orb + drb + stl + blk + g + gs + experience + mp + x3p_percent + x2p_percent + e_fg_percent + fg_percent + ft_percent + tov + pf,data = data, nbest=1,method = 'exhaustive',nvmax = 16,really.big = TRUE)
+summary(bestMod)
+plot(bestMod, scale = "bic")
+plot(bestMod, scale = "adjr2")
+plot(bestMod, scale = "Cp")
+
+```
+
+
+
+```{r}
+
+mlrBIC <- lm(adjustedsalary ~ pts + ast + orb + drb + stl + gs + experience + mp +fg_percent + x2p_percent + e_fg_percent, data = data)
+mlrAR2 <- lm(adjustedsalary ~ pts + ast + orb + drb + stl + blk + gs + experience + mp +fg_percent   + x3p_percent +x2p_percent + e_fg_percent + fg_percent + ft_percent + tov + pf, data = data)
+mlrCP <- lm(adjustedsalary ~ pts + ast + orb + drb + stl + blk + gs + experience + mp +fg_percent +x2p_percent + e_fg_percent + fg_percent + ft_percent + tov + pf, data = data)
+#summary(mlr)
+summary(mlrBIC)
+#summary(mlrAR2)
+#summary(mlrCP)
+
+
 ```
