@@ -37,11 +37,11 @@ for i in range(1990, 2023):
 
         player_names=[salary_table.find_all("td")[j].text.strip() for j in range(5,length,4)]
         seas = [i + 1 for _ in range(5,length,4)]
-        sals=[salary_table.find_all("td")[j].text.strip() for j in range(6,length,4)]
+        sals=[int(salary_table.find_all("td")[j].text.strip().replace(',','').replace('$','')) for j in range(6,length,4)]
 
         adjust = cpiDict[i]
         currmoney = cpiDict[2022]
-        adj2023 = [(currmoney * (int(j.replace('$','').replace(',',''))/adjust))//1 for j in sals]
+        adj2023 = [(currmoney * ((j)/adjust))//1 for j in sals]
 
         df_dict={'player_names':player_names,
         'season':seas,

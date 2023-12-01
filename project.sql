@@ -77,7 +77,8 @@ FROM player_info AS pi
 JOIN player_salaries AS sal ON (pi.player,pi.season) = (sal.name,sal.season);
 
 DROP TABLE IF EXISTS player_info;
-
+ALTER TABLE f23_group14.player_stats to f23_group14;
+ALTER TABLE f23_group14.player_salaryinfo to f23_group14;
 --SELECT seas_id, player_id, player, salaries.salary, g, 
 --    gs , mp , fg , fga ,
 --    fg_percent , x3p , x3pa , x3p_percent ,
