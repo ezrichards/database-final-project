@@ -26,8 +26,8 @@ CREATE
 TABLE player_stats(
     seas_id INT, player_id NUMERIC, player TEXT, g NUMERIC, 
     gs NUMERIC, mp NUMERIC, fg NUMERIC, fga NUMERIC,
-    fg_percent FLOAT, x3p NUMERIC, x3pa NUMERIC, x3p_percent FLOAT,
-    x2p NUMERIC, x2pa NUMERIC, x2p_percent FLOAT, e_fg_percent FLOAT,
+    fg_percent NUMERIC, x3p NUMERIC, x3pa NUMERIC, x3p_percent NUMERIC,
+    x2p NUMERIC, x2pa NUMERIC, x2p_percent NUMERIC, e_fg_percent NUMERIC,
     ft NUMERIC, fta NUMERIC, ft_percent FLOAT, orb NUMERIC, drb NUMERIC,
     trb NUMERIC, ast NUMERIC, stl NUMERIC, blk NUMERIC, tov NUMERIC, pf NUMERIC, pts NUMERIC
 );
